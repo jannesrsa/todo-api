@@ -12,8 +12,8 @@ init:
 - ps: $Env:LABEL = "preview1-" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
 - ps: if(-not $env:APPVEYOR_PULL_REQUEST_NUMBER) { $env:is_not_pr = "true"; }
 
-before_build:
-- appveyor-retry dotnet restore -v Minimal
+# before_build:
+# - appveyor-retry dotnet restore -v Minimal
 
 build_script:
 - dotnet build "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
@@ -28,5 +28,5 @@ after_build:
 test_script:
 # - dotnet test "src\TodoApi\Tests\UTest\TodoApi.Tests.UTest.csproj" -c %CONFIGURATION% --no-build
 
-cache:
-  - packages -> **\packages.config      # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
+# cache:
+#  - packages -> **\packages.config      # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
