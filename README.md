@@ -48,3 +48,43 @@ dotnet new webapi -n TodoApi
 - [Implement the other CRUD operations](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-2.0#implement-the-other-crud-operations)
 
 If you wish to skip the guide you can access the source code directly at [TodoApi](https://github.com/aspnet/Docs/tree/master/aspnetcore/tutorials/first-web-api/samples/2.0/TodoApi).
+
+# Release-2.0
+
+### Multi-targeting for .NET Framework 4.6.1 and .NET Core 2.1
+
+- Edit your .csproj
+- Replace the `<TargetFramework>` node with the following:
+
+```xml
+<TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
+```
+
+- The `Microsoft.AspNetCore.All` reference is not compatible with net461.
+- Replace that reference with the following:
+
+```xml
+<PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
+<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
+<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
+<PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
+```
+
+- Ensure you can use the latest version of the C# compiler and FxCop
+- Add the following:
+
+```xml
+<PackageReference Include="Microsoft.Net.Compilers" Version="2.8.2">
+    <PrivateAssets>all</PrivateAssets>
+    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+</PackageReference>
+<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.1">
+    <PrivateAssets>All</PrivateAssets>
+</PackageReference>
+```
+
+- Reload and rebuild.
+- Notice the tooling support for dealing with multiple frameworks:
+  - Dependencies
+  - Launch
