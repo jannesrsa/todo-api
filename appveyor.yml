@@ -27,3 +27,6 @@ after_build:
 
 test_script:
 # - dotnet test "src\TodoApi\Tests\UTest\TodoApi.Tests.UTest.csproj" -c %CONFIGURATION% --no-build
+
+cache:
+  - packages -> **\packages.config      # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified

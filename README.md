@@ -1,6 +1,10 @@
-AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/github/jannesrsa/todo-api?svg=true)](https://ci.appveyor.com/project/jannesrsa/sourcecode-todo-api)
-Codecov: [![Code Coverage](https://codecov.io/gh/jannesrsa/todo-api/coverage.svg)](https://codecov.io/gh/jannesrsa/todo-api)
-CodeFactor: [![CodeFactor](https://www.codefactor.io/repository/github/jannesrsa/todo-api/badge)](https://www.codefactor.io/repository/github/jannesrsa/todo-api)
+### Build & Test Status
+
+| Metric      | Status      |
+| ----- | ----- |
+|AppVeyor | [![Build status](https://ci.appveyor.com/api/projects/status/github/jannesrsa/todo-api?svg=true)](https://ci.appveyor.com/project/jannesrsa/sourcecode-todo-api) |
+|Codecov | [![Code Coverage](https://codecov.io/gh/jannesrsa/todo-api/coverage.svg)](https://codecov.io/gh/jannesrsa/todo-api) |
+|CodeFactor | [![CodeFactor](https://www.codefactor.io/repository/github/jannesrsa/todo-api/badge)](https://www.codefactor.io/repository/github/jannesrsa/todo-api) |
 
 # ASP.NET Core Todo REST API
 
