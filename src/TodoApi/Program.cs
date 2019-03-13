@@ -21,13 +21,6 @@ namespace TodoApi
         {
             var pathToContentRoot = AppDomain.CurrentDomain.BaseDirectory;
 
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .WriteTo.RollingFile(Path.Combine(pathToContentRoot, "Logs", "log-{Date}.txt"))
-                .CreateLogger();
             try
             {
 #if NET461
