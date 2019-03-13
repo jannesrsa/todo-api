@@ -32,4 +32,5 @@ artifacts:
 - path: artifacts\**\*.*
 
 cache:
-- '%USERPROFILE%\.nuget\packages'
+  - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
+  - '%LocalAppData%\NuGet\Cache'
