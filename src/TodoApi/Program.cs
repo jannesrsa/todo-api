@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Serilog;
+using Serilog.Events;
+using System;
 
 #if NET461
 
@@ -16,30 +19,49 @@ namespace TodoApi
     {
         public static void Main(string[] args)
         {
-            var pathToContentRoot = Directory.GetCurrentDirectory();
-#if NET461
-            var isService = !(Debugger.IsAttached || args.Contains("--console"));
+            var pathToContentRoot = AppDomain.CurrentDomain.BaseDirectory;
 
-            if (isService)
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.RollingFile(Path.Combine(pathToContentRoot, "Logs", "log-{Date}.txt"))
+                .CreateLogger();
+            try
             {
-                var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
-                pathToContentRoot = Path.GetDirectoryName(pathToExe);
-            }
+#if NET461
+                var isService = !(Debugger.IsAttached || args.Contains("--console"));
+
+                if (isService)
+                {
+                    var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
+                    pathToContentRoot = Path.GetDirectoryName(pathToExe);
+                }
 #endif
 
-            var host = WebHost.CreateDefaultBuilder(args)
-                .UseContentRoot(pathToContentRoot)
-                .UseStartup<Startup>()
-                .Build();
+                var host = WebHost.CreateDefaultBuilder(args)
+                    .UseContentRoot(pathToContentRoot)
+                    .UseStartup<Startup>()
+                    .Build();
 
 #if NET461
-            if (isService)
-            {
-                host.RunAsService();
-                return;
-            }
+                if (isService)
+                {
+                    host.RunAsService();
+                    return;
+                }
 #endif
-            host.Run();
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
     }
 }
