@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 using TodoApi.CertAuth;
 using TodoApi.Models;
 
@@ -34,6 +35,11 @@ namespace TodoApi
             }
 
             app.UseAuthentication();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo API V1");
+            });
             app.UseMvc();
         }
 
@@ -70,6 +76,12 @@ namespace TodoApi
                         policy.RequireRole("EnvironmentOwner"));
                 });
             }
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Todo API", Version = "v1" });
+            });
         }
 
         internal static CertificateAuthenticationConfig GetCertificateAuthenticationConfig(IConfiguration configuration)
