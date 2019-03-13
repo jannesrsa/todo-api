@@ -39,7 +39,6 @@ test_script:
     -hideskipped:File
 
 after_test:
-# - pip install codecov 
 - >-
     codecov 
     -X gcov 
