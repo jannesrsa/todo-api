@@ -16,10 +16,12 @@ before_build:
 - appveyor-retry dotnet restore -v Minimal
 
 build_script:
+- dotnet build "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 - dotnet build "src\TodoApi\TodoApi.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 # - dotnet build "src\TodoApi\Tests\UTest\TodoApi.Tests.UTest.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 
 after_build:
+- dotnet pack "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 - dotnet pack "src\TodoApi\TodoApi.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 # - dotnet pack "src\TodoApi\Tests\UTest\TodoApi.Tests.UTest.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 
