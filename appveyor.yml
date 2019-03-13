@@ -26,7 +26,27 @@ after_build:
 - dotnet pack "tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 
 test_script:
-- dotnet test "tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj" -c %CONFIGURATION% --no-build
+- >-
+    OpenCover.Console.exe
+    -target:"dotnet.exe"
+    -targetargs:"test tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj -c %CONFIGURATION% --no-build"
+    -filter:"+[*]* -[*.Tests]*"
+    -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml"
+    -excludebyattribute:*.ExcludeFromCodeCoverage*
+    -oldStyle
+    -register:user
+    -mergebyhash
+    -hideskipped:File
+
+after_test:
+# - pip install codecov 
+- >-
+    codecov 
+    -X gcov 
+    -f "%APPVEYOR_BUILD_FOLDER%\coverage.xml"
+
+after_build:
+- ps: Add-AppveyorMessage "NuGet artifact not deployed. Version. $env:APPVEYOR_BUILD_VERSION" -Category "Information" -Details "The NuGet package is not published automatically, but can be published through the AppVeyor Deploy UI."
 
 artifacts:
 - path: artifacts\**\*.*
