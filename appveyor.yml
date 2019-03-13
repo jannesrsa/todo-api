@@ -24,6 +24,7 @@ after_build:
 - dotnet pack "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 - dotnet pack "src\TodoApi\TodoApi.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 - dotnet pack "tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
+- ps: Add-AppveyorMessage "NuGet artifact not deployed. Version. $env:APPVEYOR_BUILD_VERSION" -Category "Information" -Details "The NuGet package is not published automatically, but can be published through the AppVeyor Deploy UI."
 
 test_script:
 - >-
@@ -39,13 +40,11 @@ test_script:
     -hideskipped:File
 
 after_test:
+# - pip install codecov 
 - >-
     codecov 
     -X gcov 
     -f "%APPVEYOR_BUILD_FOLDER%\coverage.xml"
-
-after_build:
-- ps: Add-AppveyorMessage "NuGet artifact not deployed. Version. $env:APPVEYOR_BUILD_VERSION" -Category "Information" -Details "The NuGet package is not published automatically, but can be published through the AppVeyor Deploy UI."
 
 artifacts:
 - path: artifacts\**\*.*
