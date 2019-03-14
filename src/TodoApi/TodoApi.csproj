@@ -23,6 +23,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <DebugType>Full</DebugType>
+  </PropertyGroup>
   
   <ItemGroup>
     <Compile Remove="tests\**" />
