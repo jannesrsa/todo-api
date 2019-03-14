@@ -77,6 +77,6 @@ artifacts:
 - path: artifacts\**\*.*
 - path: 'coverage.xml'
 
-cache:
-  - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
-  - '%LocalAppData%\NuGet\Cache'
+# cache:
+#  - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
+#  - '%LocalAppData%\NuGet\Cache'
