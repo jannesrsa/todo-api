@@ -23,7 +23,7 @@ init:
 - ps: $Env:LABEL = "preview1-" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
 
 install:
-- pip install --user codecov
+- pip install codecov
 
 before_build:
 - nuget restore -verbosity quiet
