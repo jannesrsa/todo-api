@@ -12,6 +12,9 @@ environment:
 init:
 - ps: $Env:LABEL = "preview1-" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
 
+install:
+- pip install codecov 
+
 before_build:
 - appveyor-retry dotnet restore -v Minimal
 
@@ -40,7 +43,6 @@ test_script:
     -hideskipped:File
 
 after_test:
-- pip install codecov 
 - >-
     codecov 
     -X gcov 
@@ -48,6 +50,7 @@ after_test:
 
 artifacts:
 - path: artifacts\**\*.*
+- path: 'coverage.xml'
 
 cache:
   - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
