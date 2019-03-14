@@ -51,7 +51,7 @@ test_script:
     -target:"dotnet.exe"
     -targetargs:"test tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj -c %CONFIGURATION% --no-build"
     -filter:"+[*]* -[*.Tests]*"
-    -output:"$env:APPVEYOR_BUILD_FOLDER\coverage.xml"
+    -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml"
     -excludebyattribute:*.ExcludeFromCodeCoverage*
     -oldStyle
     -register:user
