@@ -29,7 +29,7 @@ before_build:
 - nuget restore -verbosity quiet
 
 build_script:
-- dotnet build "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c S%CONFIGURATION% --no-dependencies --version-suffix %LABEL% --verbosity quiet
+- dotnet build "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL% --verbosity quiet
 - dotnet build "src\TodoApi\TodoApi.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL% --verbosity quiet
 - dotnet build "tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL% --verbosity quiet
 
