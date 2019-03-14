@@ -47,8 +47,7 @@ after_build:
 - dotnet pack "src\TodoApi\TodoApi.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 - dotnet pack "tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 - >-
-    Add
-    -AppveyorMessage "NuGet artifact not deployed. 
+    Add-AppveyorMessage "NuGet artifact not deployed. 
     Version. $env:APPVEYOR_BUILD_VERSION
     APPVEYOR_BUILD_FOLDER: %APPVEYOR_BUILD_FOLDER%
     ENV: $env:APPVEYOR_BUILD_FOLDER" 
