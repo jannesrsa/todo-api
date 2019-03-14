@@ -23,10 +23,10 @@ init:
 - ps: $Env:LABEL = "preview1-" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
 
 install:
-- pip install codecov
+- pip install --user codecov
 
 before_build:
-- appveyor-retry dotnet restore -v Minimal
+- nuget restore -verbosity quiet
 
 build_script:
 - dotnet build "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
@@ -61,10 +61,10 @@ test_script:
 after_test:
 - codecov -X gcov -f %APPVEYOR_BUILD_FOLDER%\coverage.xml
 
-artifacts:
-- path: artifacts\**\*.*
+# artifacts:
+# - path: artifacts\**\*.*
 # - path: 'coverage.xml'
 
-# cache:
-#  - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
+cache:
+- '%USERPROFILE%\.nuget\packages -> **\*.csproj'
 #  - '%LocalAppData%\NuGet\Cache'
