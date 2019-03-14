@@ -22,17 +22,8 @@ init:
 - cmd: git config --global core.autocrlf true
 - ps: $Env:LABEL = "preview1-" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
 
-# clone directory
-clone_folder: c:\projects\todoapi
-
-# fetch repository as zip archive
-shallow_clone: true                 # default is "false"
-
-# set clone depth
-clone_depth: 5                      # clone entire repository history if not defined
-
 install:
-- pip install codecov 
+- pip install codecov
 
 before_build:
 - appveyor-retry dotnet restore -v Minimal
@@ -48,12 +39,11 @@ after_build:
 - dotnet pack "tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 - ps: >-
     Add-AppveyorMessage
-    "NuGet artifact not deployed. 
-    Version. $env:APPVEYOR_BUILD_VERSION
-    APPVEYOR_BUILD_FOLDER: %APPVEYOR_BUILD_FOLDER%
-    ENV: $env:APPVEYOR_BUILD_FOLDER" 
+    "NuGet artifact not deployed. Version. $env:APPVEYOR_BUILD_VERSION"
     -Category "Information" 
-    -Details "The NuGet package is not published automatically, but can be published through the AppVeyor Deploy UI."
+    -Details "The NuGet package is not published automatically, but can be published through the AppVeyor Deploy UI.
+    APPVEYOR_BUILD_FOLDER: %APPVEYOR_BUILD_FOLDER%
+    ENV: $env:APPVEYOR_BUILD_FOLDER"
 
 test_script:
 - >-
@@ -61,7 +51,7 @@ test_script:
     -target:"dotnet.exe"
     -targetargs:"test tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj -c %CONFIGURATION% --no-build"
     -filter:"+[*]* -[*.Tests]*"
-    -output:"c:\projects\todoapi\coverage.xml"
+    -output:"$env:APPVEYOR_BUILD_FOLDER\coverage.xml"
     -excludebyattribute:*.ExcludeFromCodeCoverage*
     -oldStyle
     -register:user
@@ -69,14 +59,11 @@ test_script:
     -hideskipped:File
 
 after_test:
-- >-
-    codecov 
-    -X gcov 
-    -f "c:\projects\todoapi\coverage.xml"
+- codecov -X gcov -f $env:APPVEYOR_BUILD_FOLDER\coverage.xml
 
 artifacts:
 - path: artifacts\**\*.*
-- path: 'coverage.xml'
+# - path: 'coverage.xml'
 
 # cache:
 #  - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
