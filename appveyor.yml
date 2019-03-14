@@ -9,8 +9,27 @@ environment:
   # Don't report back to the mothership
  DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
+ dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+
 init:
+- cmd: git config --global core.autocrlf true
 - ps: $Env:LABEL = "preview1-" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
+
+# clone directory
+clone_folder: c:\projects\todoapi
+
+# fetch repository as zip archive
+shallow_clone: true                 # default is "false"
+
+# set clone depth
+clone_depth: 5                      # clone entire repository history if not defined
 
 install:
 - pip install codecov 
@@ -27,7 +46,14 @@ after_build:
 - dotnet pack "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 - dotnet pack "src\TodoApi\TodoApi.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
 - dotnet pack "tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
-- ps: Add-AppveyorMessage "NuGet artifact not deployed. Version. $env:APPVEYOR_BUILD_VERSION" -Category "Information" -Details "The NuGet package is not published automatically, but can be published through the AppVeyor Deploy UI."
+- >-
+    Add
+    -AppveyorMessage "NuGet artifact not deployed. 
+    Version. $env:APPVEYOR_BUILD_VERSION
+    APPVEYOR_BUILD_FOLDER: %APPVEYOR_BUILD_FOLDER%
+    ENV: $env:APPVEYOR_BUILD_FOLDER" 
+    -Category "Information" 
+    -Details "The NuGet package is not published automatically, but can be published through the AppVeyor Deploy UI."
 
 test_script:
 - >-
@@ -35,7 +61,7 @@ test_script:
     -target:"dotnet.exe"
     -targetargs:"test tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj -c %CONFIGURATION% --no-build"
     -filter:"+[*]* -[*.Tests]*"
-    -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml"
+    -output:"c:\projects\todoapi\coverage.xml"
     -excludebyattribute:*.ExcludeFromCodeCoverage*
     -oldStyle
     -register:user
@@ -46,7 +72,7 @@ after_test:
 - >-
     codecov 
     -X gcov 
-    -f "%APPVEYOR_BUILD_FOLDER%\coverage.xml"
+    -f "c:\projects\todoapi\coverage.xml"
 
 artifacts:
 - path: artifacts\**\*.*
