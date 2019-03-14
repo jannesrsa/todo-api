@@ -9,7 +9,7 @@ environment:
   # Don't report back to the mothership
  DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
- dotnet_csproj:
+dotnet_csproj:
   patch: true
   file: '**\*.csproj'
   version: '{version}'
