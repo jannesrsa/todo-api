@@ -29,9 +29,9 @@ before_build:
 - nuget restore -verbosity quiet
 
 build_script:
-- dotnet build "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
-- dotnet build "src\TodoApi\TodoApi.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
-- dotnet build "tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+- dotnet build "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c S%CONFIGURATION% --no-dependencies --version-suffix %LABEL% --verbosity quiet
+- dotnet build "src\TodoApi\TodoApi.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL% --verbosity quiet
+- dotnet build "tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL% --verbosity quiet
 
 after_build:
 - dotnet pack "src\TodoApi.CertAuth\TodoApi.CertAuth.csproj" -c %CONFIGURATION% --no-build --version-suffix %LABEL%
@@ -49,7 +49,7 @@ test_script:
 - >-
     OpenCover.Console.exe
     -target:"dotnet.exe"
-    -targetargs:"test tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj -c %CONFIGURATION% --no-build"
+    -targetargs:"test tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj -c %CONFIGURATION% --no-build --verbosity quiet"
     -filter:"+[*]* -[*.Tests]*"
     -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml"
     -excludebyattribute:*.ExcludeFromCodeCoverage*
@@ -65,6 +65,6 @@ after_test:
 # - path: artifacts\**\*.*
 # - path: 'coverage.xml'
 
-cache:
-- '%USERPROFILE%\.nuget\packages -> **\*.csproj'
-#  - '%LocalAppData%\NuGet\Cache'
+cache:# (Takes to long to ZIP)
+# - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
+- '%LocalAppData%\NuGet\Cache'
