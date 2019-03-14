@@ -65,6 +65,5 @@ after_test:
 # - path: artifacts\**\*.*
 # - path: 'coverage.xml'
 
-cache:# (Takes to long to ZIP)
-# - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
+cache:
 - '%LocalAppData%\NuGet\Cache'
