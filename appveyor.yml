@@ -48,18 +48,16 @@ after_build:
 test_script:
 - >-
     OpenCover.Console.exe
+    -register:user
     -target:"dotnet.exe"
-    -targetargs:"test tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj -c %CONFIGURATION% --no-build"
+    -targetargs:"test tests\UTest\TodoApi.Tests.UTests\TodoApi.Tests.UTests.csproj"
     -filter:"+[*]* -[*.Tests]*"
     -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml"
     -excludebyattribute:*.ExcludeFromCodeCoverage*
-    -oldStyle
-    -register:user
-    -mergebyhash
-    -hideskipped:File
+    -returntargetcode
 
 after_test:
-- codecov -X gcov -f $env:APPVEYOR_BUILD_FOLDER\coverage.xml
+- codecov -X gcov -f %APPVEYOR_BUILD_FOLDER%\coverage.xml
 
 artifacts:
 - path: artifacts\**\*.*
